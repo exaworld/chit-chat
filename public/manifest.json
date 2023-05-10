@@ -1,0 +1,7 @@
+{
+  "short_name": "Chit Chat",
+  "name": "Chit Chat: A chat application initiated with create react app",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone"
+}
