@@ -2,14 +2,96 @@
 ### Do not make changes to this file directly
 
 
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+type Message {
+  body: String!
+  id: String!
+  recipient: Recipient!
+  sender: User!
+  senderId: String!
+  sentAt: Date
+}
+
+input MessageCreateInput {
+  body: String!
+  recipient: RecipientCreateInput!
+  replyToMessageId: String
+  senderId: String!
+}
+
+input MessageWhereUniqueInput {
+  id: String!
+}
+
+type Mutation {
+  createMessage(data: MessageCreateInput!): Message
+  createUser(data: UserCreateInput!): User
+  deleteMessage(where: MessageWhereUniqueInput!): Message
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+}
+
 type Query {
-  ok: Boolean!
+  message(where: MessageWhereUniqueInput!): Message
+  messages: [Message]
+  recipient(where: RecipientWhereUniqueInput!): Recipient
+  recipients: [Recipient]
+  user(where: UserWhereUniqueInput!): User
+  users: [User]
+}
+
+type Recipient {
+  groupId: String
+  id: String!
+  message: Message!
+  messageId: String!
+  recipientKeep: Boolean
+  user: User!
+  userId: String
+}
+
+input RecipientCreateInput {
+  groupId: String = null
+  userId: String!
+}
+
+input RecipientWhereUniqueInput {
+  id: String!
 }
 
 type User {
+  email: String!
+  firstName: String!
+  id: String!
+  lastName: String!
+  username: String!
+}
+
+input UserCreateInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  username: String!
+}
+
+input UserUpdateInput {
+  firstName: String
+  lastName: String
+  username: String
+}
+
+input UserWhereInput {
   email: String
   firstName: String
   id: String
   lastName: String
   username: String
+}
+
+input UserWhereUniqueInput {
+  id: String!
 }
