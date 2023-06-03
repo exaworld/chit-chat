@@ -1,4 +1,7 @@
 import { objectType, inputObjectType, extendType, arg, nonNull, nullable } from 'nexus';
+import { UserValidation } from '../../utils/validation';
+import { hash } from 'bcrypt';
+const bcrypt = require('bcrypt');
 
 export const User = objectType({
   name: 'User',
@@ -19,6 +22,7 @@ export const UserCreateInput = inputObjectType({
     t.nonNull.string('firstName');
     t.nonNull.string('lastName');
     t.nonNull.string('password');
+    t.nonNull.string('passwordConfirmation')
   },
 });
 
@@ -79,8 +83,37 @@ export const Mutation = extendType({
       args: {
         data: nonNull(UserCreateInput),
       },
-      resolve(_root, { data }, { db }) {
-        return db.user.create({ data });
+      resolve: async(_root, { data }, { db }) => {
+        const { username, email, firstName, lastName, password, passwordConfirmation } = data;
+
+        const validation = new UserValidation();
+        const isValidFirstName = validation.firstName(firstName);
+        const isValidLastName = validation.lastName(lastName)
+        const isValidEmail = validation.email(email);
+        const existingUser = await db.user.findUnique({ where: { email }})
+        if (existingUser) {
+          throw new Error('Email has an existing account.')
+        }
+
+        const isValidPassword = validation.password(password);
+        const isValidPasswordConfirmation = validation.passwordConfirmation(password, passwordConfirmation);
+
+        // Hash the password
+        let hashedPassword = await bcrypt.hash(password, 10) || null
+
+        if (isValidFirstName && isValidLastName && isValidEmail && isValidPassword && isValidPasswordConfirmation) {
+          return await db.user.create({
+            data: {
+              username,
+              firstName,
+              lastName,
+              email,
+              password: hashedPassword!
+            }
+          });
+        }
+
+        return null
       },
     });
 

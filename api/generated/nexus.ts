@@ -50,6 +50,7 @@ export interface NexusGenInputs {
     firstName: string; // String!
     lastName: string; // String!
     password: string; // String!
+    passwordConfirmation: string; // String!
     username: string; // String!
   }
   UserUpdateInput: { // input type
@@ -82,6 +83,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Auth: { // root type
+    accessToken: string; // String!
+    refreshToken: string; // String!
+  }
   Message: { // root type
     body: string; // String!
     id: string; // String!
@@ -117,6 +122,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Auth: { // field return type
+    accessToken: string; // String!
+    refreshToken: string; // String!
+  }
   Message: { // field return type
     body: string; // String!
     id: string; // String!
@@ -129,6 +138,7 @@ export interface NexusGenFieldTypes {
     createMessage: NexusGenRootTypes['Message'] | null; // Message
     createUser: NexusGenRootTypes['User'] | null; // User
     deleteMessage: NexusGenRootTypes['Message'] | null; // Message
+    login: NexusGenRootTypes['Auth']; // Auth!
     updateUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
@@ -158,6 +168,10 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Auth: { // field return type name
+    accessToken: 'String'
+    refreshToken: 'String'
+  }
   Message: { // field return type name
     body: 'String'
     id: 'String'
@@ -170,6 +184,7 @@ export interface NexusGenFieldTypeNames {
     createMessage: 'Message'
     createUser: 'User'
     deleteMessage: 'Message'
+    login: 'Auth'
     updateUser: 'User'
   }
   Query: { // field return type name
@@ -208,6 +223,10 @@ export interface NexusGenArgTypes {
     }
     deleteMessage: { // args
       where: NexusGenInputs['MessageWhereUniqueInput']; // MessageWhereUniqueInput!
+    }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
     }
     updateUser: { // args
       data: NexusGenInputs['UserUpdateInput']; // UserUpdateInput!

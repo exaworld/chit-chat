@@ -73,7 +73,6 @@ export const MessageMutation = extendType({
       },
       resolve: async(_root, { data }, { db }) => {
         const { recipient, ...messageData } = data;
-        console.log(recipient)
         return db.message.create({
           data: {
             ...messageData,
