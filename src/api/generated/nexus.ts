@@ -9,17 +9,17 @@ import type { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
     /**
-     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
-    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Date";
+    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
   }
 }
 declare global {
   interface NexusGenCustomOutputMethods<TypeName extends string> {
     /**
-     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
-    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
+    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
   }
 }
 
@@ -79,7 +79,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
-  Date: any
+  DateTime: any
 }
 
 export interface NexusGenObjects {
@@ -91,7 +91,7 @@ export interface NexusGenObjects {
     body: string; // String!
     id: string; // String!
     senderId: string; // String!
-    sentAt?: NexusGenScalars['Date'] | null; // Date
+    sentAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   Mutation: {};
   Query: {};
@@ -132,7 +132,7 @@ export interface NexusGenFieldTypes {
     recipient: NexusGenRootTypes['Recipient']; // Recipient!
     sender: NexusGenRootTypes['User']; // User!
     senderId: string; // String!
-    sentAt: NexusGenScalars['Date'] | null; // Date
+    sentAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
   Mutation: { // field return type
     createMessage: NexusGenRootTypes['Message'] | null; // Message
@@ -178,7 +178,7 @@ export interface NexusGenFieldTypeNames {
     recipient: 'Recipient'
     sender: 'User'
     senderId: 'String'
-    sentAt: 'Date'
+    sentAt: 'DateTime'
   }
   Mutation: { // field return type name
     createMessage: 'Message'

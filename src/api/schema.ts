@@ -13,7 +13,7 @@ export const schema = makeSchema({
     },
     contextType: {
         // Path to the module where the context type is exported
-        module: join(process.cwd(), "./api/context.ts"),
+        module: join(__dirname, "/context.ts"),
         // Name of the export in that module
         export: 'Context',
     },

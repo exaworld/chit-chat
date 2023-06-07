@@ -1,6 +1,5 @@
 import { objectType, inputObjectType, extendType, arg, nonNull, nullable } from 'nexus';
-import { UserValidation } from '../../utils/validation';
-import { hash } from 'bcrypt';
+import { UserValidation } from '../../../utils/validation';
 const bcrypt = require('bcrypt');
 
 export const User = objectType({

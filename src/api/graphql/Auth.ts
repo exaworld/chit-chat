@@ -1,4 +1,6 @@
+import { GraphQLError } from 'graphql';
 import { extendType, nonNull, objectType, stringArg } from 'nexus';
+const crypto = require("crypto-js");
 const bcrypt = require('bcrypt');
 
 export const Auth = objectType({
@@ -22,12 +24,23 @@ export const loginMutation = extendType({
         const user = await db.user.findFirst({ where: { email }})
 
         if (!user) {
-            throw new Error('User not found.')
+            throw new GraphQLError('User not found.', {
+              extensions: {
+                code: 'AUTHENTICATION_FAILED'
+              }
+            })
         }
 
-        const isPasswordCorrect = await bcrypt.compare(password, user.password)
+        const passwordDecrypt = crypto.AES.decrypt(password, email).toString(crypto.enc.Utf8);
+        console.log(passwordDecrypt)
+
+        const isPasswordCorrect = await bcrypt.compare(passwordDecrypt, user.password)
         if (!isPasswordCorrect) {
-            throw new Error('Invalid password.')
+            throw new GraphQLError('Invalid password.', {
+              extensions: {
+                code: 'AUTHENTICATION_FAILED'
+              }
+            })
         }
 
         const { accessToken, refreshToken } = auth.createAuthToken(user?.id)

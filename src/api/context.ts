@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { IncomingMessage } from 'http';
-import { AuthProvider } from '../utils/authProvider';
+import { AuthProvider } from '../../utils/authProvider';
 
 export const db = new PrismaClient();
 export const auth = new AuthProvider();
