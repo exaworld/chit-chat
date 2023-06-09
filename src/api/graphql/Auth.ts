@@ -32,10 +32,8 @@ export const loginMutation = extendType({
         }
 
         const passwordDecrypt = crypto.AES.decrypt(password, email).toString(crypto.enc.Utf8);
-        console.log(passwordDecrypt)
-
-        const isPasswordCorrect = await bcrypt.compare(passwordDecrypt, user.password)
-        if (!isPasswordCorrect) {
+        const isValidPassword = await bcrypt.compare(passwordDecrypt, user.password)
+        if (!isValidPassword) {
             throw new GraphQLError('Invalid password.', {
               extensions: {
                 code: 'AUTHENTICATION_FAILED'

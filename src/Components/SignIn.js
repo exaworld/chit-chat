@@ -9,10 +9,12 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Login } from '../api/graphql/Client/Auth';
 import { useMutation } from '@apollo/client';
 const crypto = require("crypto-js");
+import { setTokenCookies } from '../Utils/cookies';
+import Cookies from 'js-cookie';
 
 
 function Copyright(props) {
@@ -31,31 +33,32 @@ function Copyright(props) {
 export default function SignIn() {
     const [login, { data, loading }] = useMutation(Login);
     const [errorMessage, setErrorMessage] = useState(null);
+    const hasUser = Cookies.get('accessToken');
     
     const handleSubmit = async (event) => {
         event.preventDefault();
         const userData = new FormData(event.currentTarget);
         const email = userData.get('email');
         const password = crypto.AES.encrypt(userData.get('password'), email).toString();
-        console.log(password)
 
         try {
             setErrorMessage(null);
-            await login({
+            const { data } = await login({
                 variables: {
                     email,
                     password
                 }
             })
-
-            //Save token and redirect
+            const { accessToken, refreshToken } = data?.login;
+            setTokenCookies(accessToken, refreshToken);
         } catch (error) {
-            if (error.graphQLErrors[0].extensions.code === 'AUTHENTICATION_FAILED') {
+            if (error.graphQLErrors && error.graphQLErrors[0].extensions?.code === 'AUTHENTICATION_FAILED') {
                 setErrorMessage('Email and password do not match')
             }
         }
     };
-
+    
+    if (hasUser) return <Navigate replace to="/" />
     return (
         <Container component="main" maxWidth="xs">
             <Box
@@ -94,7 +97,7 @@ export default function SignIn() {
                         autoComplete="current-password"
                         />
                     { errorMessage &&
-                        <Typography variant="caption">{ errorMessage }</Typography>
+                        <Typography variant="caption" color="red">{ errorMessage }</Typography>
                     }
 
                     <FormControlLabel
