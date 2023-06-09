@@ -7,8 +7,12 @@ import SignUp from './Components/SignUp';
 import MainPage from './Pages/MainPage';
 import ChatScreen from './Pages/ChatBox';
 import ChatDetailBar from './Components/ChatDetailBar';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '../src/api/client'
+
 
 export const DeviceContext = createContext();
+
 
 const App = () => {
   const [ windowSize, setWindowSize ] = useState(window.innerWidth);
@@ -26,19 +30,21 @@ const App = () => {
   }, [windowSize])
 
   return (
-    <div className="App">
-       <DeviceContext.Provider value={devices}>
-        <Router>
-          <Routes>
-            <Route path="/" Component={ MainPage } />
-            <Route path="/chat" Component={ isMobile ? ChatScreen : MainPage } />
-            <Route path="/chatdetail" Component={ isMobile ? ChatDetailBar : MainPage } />
-            <Route path="/signup" Component={ SignUp } />
-            <Route path="signin" Component={ SignIn } />
-          </Routes>
-        </Router>
-        </DeviceContext.Provider>
-    </div>
+    <ApolloProvider client={ client }>
+      <div className="App">
+        <DeviceContext.Provider value={devices}>
+          <Router>
+            <Routes>
+              <Route path="/" Component={ MainPage } />
+              <Route path="/chat" Component={ isMobile ? ChatScreen : MainPage } />
+              <Route path="/chatdetail" Component={ isMobile ? ChatDetailBar : MainPage } />
+              <Route path="/signup" Component={ SignUp } />
+              <Route path="signin" Component={ SignIn } />
+            </Routes>
+          </Router>
+          </DeviceContext.Provider>
+      </div>
+    </ApolloProvider>
   );
 }
 
