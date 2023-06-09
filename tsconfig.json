@@ -3,7 +3,7 @@
       "target": "ES2016",
       "module": "commonjs",
       "lib": [
-        "esnext"
+        "esnext", "dom"
       ],
       "strict": true,
       "rootDir": ".",
