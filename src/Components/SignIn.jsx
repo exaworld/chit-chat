@@ -49,8 +49,8 @@ export default function SignIn() {
                     password
                 }
             })
-            const { accessToken, refreshToken } = data?.login;
-            setTokenCookies(accessToken, refreshToken);
+            const { accessToken } = data?.login;
+            setTokenCookies(accessToken);
         } catch (error) {
             if (error.graphQLErrors && error.graphQLErrors[0].extensions?.code === 'AUTHENTICATION_FAILED') {
                 setErrorMessage('Email and password do not match')
