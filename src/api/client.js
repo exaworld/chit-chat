@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 const httpLink = new HttpLink({
     uri: 'http://localhost:4000/graphql',
-    credentials: 'same-origin'
+    credentials: 'include',
 });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
@@ -22,5 +22,5 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 export const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: concat(authMiddleware, httpLink),
-    credentials: 'same-origin'
+    credentials: 'include'
 });

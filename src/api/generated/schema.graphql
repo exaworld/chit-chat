@@ -4,7 +4,6 @@
 
 type Auth {
   accessToken: String!
-  refreshToken: String!
 }
 
 """

@@ -7,7 +7,6 @@ export const Auth = objectType({
   name: 'Auth',
   definition(t) {
     t.nonNull.string('accessToken');
-    t.nonNull.string('refreshToken');
   },
 });
 
@@ -20,7 +19,7 @@ export const loginMutation = extendType({
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
-      resolve: async(_root, { email, password }, { db, auth }) => {
+      resolve: async(_root, { email, password }, { db, auth, res }) => {
         const user = await db.user.findFirst({ where: { email }})
 
         if (!user) {
@@ -42,9 +41,14 @@ export const loginMutation = extendType({
         }
 
         const { accessToken, refreshToken } = auth.createAuthToken(user?.id)
+        const options = {
+          httpOnly: true, // cookie is only accessible by the server
+          secure: true,
+          sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
+        }
+        res.cookie('refreshToken', refreshToken, options);
         return {
             accessToken,
-            refreshToken
         };
       },
     });

@@ -1,5 +1,6 @@
 import { objectType, inputObjectType, extendType, arg, nonNull, nullable } from 'nexus';
 import { UserValidation } from '../../../utils/validation';
+import { GraphQLError } from 'graphql';
 const bcrypt = require('bcrypt');
 
 export const User = objectType({
@@ -57,7 +58,8 @@ export const Query = extendType({
   definition(t) {
     t.list.field('users', {
       type: 'User',
-      resolve: async(_root, _args, { db }) => {
+      resolve: async(_root, _args, { db, authenticate }) => {
+        authenticate();
         return await db.user.findMany();
       },
     });

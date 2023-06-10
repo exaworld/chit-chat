@@ -1,24 +1,20 @@
-export const setTokenCookies = (accessToken: string, refreshToken: string) => {
+export const setTokenCookies = (accessToken: string) => {
     const accessTokenExpiration = new Date();
     accessTokenExpiration.setDate(accessTokenExpiration.getDate() + 7); // Set expiration to 7 days from now
     document.cookie = `accessToken=${accessToken}; expires=${accessTokenExpiration.toUTCString()}; path=/; secure; SameSite=Strict;`;
-    
-    const refreshTokenExpiration = new Date();
-    refreshTokenExpiration.setDate(refreshTokenExpiration.getDate() + 30); // Set expiration to 30 days from now
-    document.cookie = `refreshToken=${refreshToken}; expires=${refreshTokenExpiration.toUTCString()}; path=/; secure; SameSite=Strict; HttpOnly`;
 }
 
-export const getAccessTokenFromCookie = () => {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.startsWith('token=')) {
-        const cookieParts = cookie.split('=');
-        if (cookieParts.length === 2) {
-          return decodeURIComponent(cookieParts[1]);
-        }
+export const parseCookie = (cookie: string) =>
+  cookie
+    .split(';')
+    .map(v => v.split('='))
+    .reduce((acc: any, v) => {
+      try {
+        acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
+        return acc;
+      } catch {
+        return {};
       }
-    }
-    return null; // Access token not found in cookies
-}
+    }, {});
+
   

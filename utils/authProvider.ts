@@ -14,8 +14,8 @@ export class AuthProvider {
 
     createAuthToken(userId: string): Token {
         return {
-            accessToken: sign({ userId }, process.env.APP_JWT_SECRET!, { expiresIn: '6d' }),
-            refreshToken: sign({ userId }, process.env.APP_JWT_REFRESH!, { expiresIn: '6d' }),
+            accessToken: sign({ userId }, process.env.APP_JWT_SECRET!, { expiresIn: '5s' }),
+            refreshToken: sign({ userId }, process.env.APP_JWT_REFRESH!, { expiresIn: '5s' }),
         }
     }
 
@@ -27,7 +27,7 @@ export class AuthProvider {
             if (error instanceof TokenExpiredError) {
               return this.verifyRefreshToken(token);
             } else {
-              throw error;
+              throw new Error('AUTHENTICATION FAILED');
             }
           }
     }

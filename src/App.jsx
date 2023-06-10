@@ -8,7 +8,7 @@ import MainPage from './Pages/MainPage';
 import ChatScreen from './Pages/ChatBox';
 import ChatDetailBar from './Components/ChatDetailBar';
 import { ApolloProvider } from '@apollo/client';
-import { client } from '../src/api/client'
+import { client } from './api/client'
 
 
 export const DeviceContext = createContext();
