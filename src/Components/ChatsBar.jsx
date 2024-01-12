@@ -41,7 +41,7 @@ const ChatsBar = () => {
                             <ListItem disablePadding key={index}>
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        <Avatar alt="Juan dela Cru" src="/static/images/avatar/2.jpg" />
+                                        <Avatar alt="Juan dela Cruz" src="/static/images/avatar/2.jpg" />
                                     </ListItemIcon>
                                     <ListItemText primary="Juan dela Cruz" />
                                 </ListItemButton>

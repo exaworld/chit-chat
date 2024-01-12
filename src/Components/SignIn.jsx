@@ -58,6 +58,7 @@ export default function SignIn() {
         }
     };
     
+    //Redirect if user is present
     if (hasUser) return <Navigate replace to="/" />
     return (
         <Container component="main" maxWidth="xs">
@@ -120,7 +121,7 @@ export default function SignIn() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link to='/'>
+                            <Link to='/signup'>
                             {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
